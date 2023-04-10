@@ -5,7 +5,7 @@ const wallet = new Wallet(
   "shed clerk spray velvet flower tide cherry idea public solar prize tackle"
 );
 
-const contract_wasm = fs.readFileSync("../contract.wasm.gz");
+// const contract_wasm = fs.readFileSync("../contract.wasm.gz");
 
 let codeId = 20552;
 let contractCodeHash =

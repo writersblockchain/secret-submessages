@@ -40,9 +40,7 @@ pub fn reply(deps: DepsMut, _env: Env, msg: Reply) -> Result<Response, ContractE
 
 fn handle_increment_reply(_deps: DepsMut, msg: Reply) -> Result<Response, ContractError> {
     match msg.result {
-        SubMsgResult::Ok(_s) => {
-            todo!()
-        }
+        SubMsgResult::Ok(_) => Ok(Response::new().add_attribute("action", "increment")),
 
         SubMsgResult::Err(e) => Err(ContractError::CustomError { val: e }),
     }

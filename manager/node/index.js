@@ -7,12 +7,12 @@ const wallet = new Wallet(
 
 const contract_wasm = fs.readFileSync("../contract1.wasm.gz");
 
-let codeId = 20580;
+let codeId = 20691;
 
 let contractCodeHash =
-  "e3e9a70dab90f373b67c516638ec1926ed979be87e9bf2990174ff36770382c2";
+  "2ef7dcad6e96227d99dbf143f876168999443c48eea0a015ecb10e64f91fa051";
 
-let contractAddress = "secret1yjjsk5nh58c4yx75ucsky8c0fakh8ysyxky6pp";
+let contractAddress = "secret14mjydu8gkez5sjjvt4gjdk3w7ypkm4x8605064";
 
 const secretjs = new SecretNetworkClient({
   chainId: "pulsar-2",
