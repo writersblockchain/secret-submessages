@@ -1,27 +1,27 @@
-import { SecretNetworkClient, Wallet } from "secretjs";
+import { SecretNetworkClient, Wallet, coinsFromString } from "secretjs";
 import * as fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
 
-const wallet = new Wallet(
-  "shed clerk spray velvet flower tide cherry idea public solar prize tackle"
-);
+const wallet = new Wallet(process.env.MNEMONIC);
 
-const contract_wasm = fs.readFileSync("../contract1.wasm.gz");
-
-let codeId = 20691;
-
-let contractCodeHash =
-  "2ef7dcad6e96227d99dbf143f876168999443c48eea0a015ecb10e64f91fa051";
-
-let contractAddress = "secret14mjydu8gkez5sjjvt4gjdk3w7ypkm4x8605064";
+const contract_wasm = fs.readFileSync("../contract.wasm.gz");
 
 const secretjs = new SecretNetworkClient({
-  chainId: "pulsar-2",
-  url: "https://api.pulsar.scrttestnet.com",
+  chainId: "pulsar-3",
+  url: "https://api.pulsar3.scrttestnet.com",
   wallet: wallet,
   walletAddress: wallet.address,
 });
 
+// Declare global variables
+let codeId;
+let contractCodeHash;
+let contractAddress;
+
 let upload_contract = async () => {
+  console.log("Starting deployment…");
+
   let tx = await secretjs.tx.compute.storeCode(
     {
       sender: wallet.address,
@@ -34,31 +34,30 @@ let upload_contract = async () => {
     }
   );
 
-  const codeId = Number(
+  codeId = Number(
     tx.arrayLog.find((log) => log.type === "message" && log.key === "code_id")
       .value
   );
-
   console.log("codeId: ", codeId);
 
-  const contractCodeHash = (
+  contractCodeHash = (
     await secretjs.query.compute.codeHashByCodeId({ code_id: codeId })
   ).code_hash;
   console.log(`Contract hash: ${contractCodeHash}`);
 };
 
-// upload_contract();
-
 let instantiate_contract = async () => {
-  // Create an instance of the Counter contract, providing a starting count
-
+  if (!codeId || !contractCodeHash) {
+    throw new Error("codeId or contractCodeHash is not set.");
+  }
+  console.log("Instantiating contract…");
   let tx = await secretjs.tx.compute.instantiateContract(
     {
       code_id: codeId,
       sender: wallet.address,
       code_hash: contractCodeHash,
       init_msg: {},
-      label: "Counter Example - Submessages" + Math.ceil(Math.random() * 10000),
+      label: "Secret -> Polygon " + Math.ceil(Math.random() * 10000),
     },
     {
       gasLimit: 400_000,
@@ -70,27 +69,14 @@ let instantiate_contract = async () => {
     (log) => log.type === "message" && log.key === "contract_address"
   ).value;
 
-  console.log(contractAddress);
+  console.log("contract address: ", contractAddress);
 };
 
-// instantiate_contract();
-
-let increase_count = async () => {
-  const tx = await secretjs.tx.compute.executeContract(
-    {
-      sender: wallet.address,
-      contract_address: contractAddress,
-      msg: {
-        increment: {
-          contract: "secret1edd6prk0w55c27dkcxzuau8mvlwa2rghgwelqk",
-        },
-      },
-      code_hash: contractCodeHash,
-    },
-    { gasLimit: 100_000 }
-  );
-
-  console.log(tx);
-};
-
-increase_count();
+// Chain the execution using promises
+upload_contract()
+  .then(() => {
+    instantiate_contract();
+  })
+  .catch((error) => {
+    console.error("Error:", error);
+  });

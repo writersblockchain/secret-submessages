@@ -51,8 +51,8 @@ pub fn try_increment(_deps: DepsMut, _env: Env, contract: String) -> StdResult<R
 
     let submsg = SubMsg::reply_always(
         exec_msg.to_cosmos_msg(
-            "cf6c359e936ded4e18716aafdef4d880cc42e4d87c29ca88205ff38c1ddf6531".to_string(),
-            "secret1edd6prk0w55c27dkcxzuau8mvlwa2rghgwelqk".to_string(),
+            "d3474b3c15ce262c78746f3536cd5f50657f0bc0b4020963947005134583e593".to_string(),
+            "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string(),
             None,
         )?,
         EXECUTE_INCREMENT_REPLY_ID,

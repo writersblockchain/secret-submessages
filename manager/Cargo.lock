@@ -26,6 +26,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e1b586273c5702936fe7b7d6896644d8be71e6314cfe09d3167c95f712589e8"
 
 [[package]]
+name = "base64"
+version = "0.21.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "35636a1494ede3b646cc98f74f8e62c773a38a659ebc777a2cf26b9b74171df9"
+
+[[package]]
 name = "base64ct"
 version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -70,6 +76,15 @@ name = "byteorder"
 version = "1.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "14c189c53d098945499cdfa7ecc63567cf3886b3332b312a5b4585d8d3a6a610"
+
+[[package]]
+name = "cc"
+version = "1.0.83"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1174fb0b6ec23863f8b971027804a42614e347eafb0a95bf0b12cdae21fc4d0"
+dependencies = [
+ "libc",
+]
 
 [[package]]
 name = "cfg-if"
@@ -181,6 +196,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6919815d73839e7ad218de758883aae3a257ba6759ce7a9992501efbb53d705c"
 dependencies = [
  "const-oid",
+]
+
+[[package]]
+name = "derivative"
+version = "2.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -317,6 +343,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "heck"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
+
+[[package]]
 name = "hex"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -388,18 +420,18 @@ checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.54"
+version = "1.0.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e472a104799c74b514a57226160104aa483546de37e839ec50e3c2e41dd87534"
+checksum = "39278fbbf5fb4f646ce651690877f89d1c5811a3d4acb27700c1cb3cdb78fd3b"
 dependencies = [
  "unicode-ident",
 ]
 
 [[package]]
 name = "quote"
-version = "1.0.26"
+version = "1.0.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4424af4bf778aae2051a77b60283332f386554255d722233d09fbfc7e30da2fc"
+checksum = "5267fca4496028628a95160fc423a33e8b2e6af8a5302579e322e4b520293cae"
 dependencies = [
  "proc-macro2",
 ]
@@ -437,7 +469,7 @@ checksum = "e13cca257d068dd3a390d04b2c3009a3fad2ee5048dfa8f239d048372810470c"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.12",
+ "syn 2.0.39",
 ]
 
 [[package]]
@@ -504,6 +536,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "secp256k1"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25996b82292a7a57ed3508f052cfff8640d38d32018784acd714758b43da9c8f"
+dependencies = [
+ "secp256k1-sys",
+]
+
+[[package]]
+name = "secp256k1-sys"
+version = "0.8.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "70a129b9e9efbfb223753b9163c4ab3b13cff7fd9c7f010fbac25ab4099fa07e"
+dependencies = [
+ "cc",
+]
+
+[[package]]
 name = "secret-cosmwasm-crypto"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -518,13 +568,15 @@ dependencies = [
 
 [[package]]
 name = "secret-cosmwasm-std"
-version = "1.0.0"
+version = "1.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a0cf71b9340ef6a67d0e2078a1ca5cda31816aa5028f90ee79864ac231a1fcb6"
+checksum = "50e4393b01aa6587007161a6bb193859deaa8165ab06c8a35f253d329ff99e4d"
 dependencies = [
- "base64",
+ "base64 0.13.1",
  "cosmwasm-derive",
+ "derivative",
  "forward_ref",
+ "hex",
  "schemars",
  "secret-cosmwasm-crypto",
  "serde",
@@ -535,9 +587,9 @@ dependencies = [
 
 [[package]]
 name = "secret-cosmwasm-storage"
-version = "1.0.0"
+version = "1.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bbf5f2977eabf4217c7ad618c36c5d0dc853c606b6ea26ab07760588d4fbeb0b"
+checksum = "bb43da2cb72a53b16ea1555bca794fb828b48ab24ebeb45f8e26f1881c45a783"
 dependencies = [
  "secret-cosmwasm-std",
  "serde",
@@ -545,35 +597,35 @@ dependencies = [
 
 [[package]]
 name = "secret-toolkit"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d9442b6833733a072e4c999d85f43f16a695e8fa9a2abdc12ef42906917b631"
+checksum = "338c972c0a98de51ccbb859312eb7672bc64b9050b086f058748ba26a509edbb"
 dependencies = [
  "secret-toolkit-crypto",
  "secret-toolkit-permit",
  "secret-toolkit-serialization",
- "secret-toolkit-storage",
  "secret-toolkit-utils",
  "secret-toolkit-viewing-key",
 ]
 
 [[package]]
 name = "secret-toolkit-crypto"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3c4d1ec4e82d50642a06f65210f8df197b7210ba52d2d934517b8ef77c499c44"
+checksum = "003d7d5772c67f2240b7f298f96eb73a8a501916fe18c1d730ebfd591bf7e519"
 dependencies = [
  "rand_chacha",
  "rand_core 0.6.4",
+ "secp256k1",
  "secret-cosmwasm-std",
  "sha2 0.10.6",
 ]
 
 [[package]]
 name = "secret-toolkit-permit"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd211147efda314345e0a67a620b042b435f06dc9356b32ef47a2faad98d2281"
+checksum = "4330571400b5959450fa37040609e6804a147d83f606783506bc2275f1527712"
 dependencies = [
  "bech32",
  "remain",
@@ -586,9 +638,9 @@ dependencies = [
 
 [[package]]
 name = "secret-toolkit-serialization"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3db679acbb4307cccf1b355f672819bd88d4a48d1e33a538723d2d279333567"
+checksum = "890adaeaa710f9f7068a807eb1553edc8c30ce9907290895c9097dd642fc613b"
 dependencies = [
  "bincode2",
  "schemars",
@@ -598,9 +650,9 @@ dependencies = [
 
 [[package]]
 name = "secret-toolkit-storage"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e8d20dc6cb56510fa5b4a54f9e7dc713ac57f0c0517be0f859f4bde4a681dae"
+checksum = "55e8c5418af3e7ae1d1331c383b32d56c74a340dbc3b972d53555a768698f2a3"
 dependencies = [
  "secret-cosmwasm-std",
  "secret-cosmwasm-storage",
@@ -610,9 +662,9 @@ dependencies = [
 
 [[package]]
 name = "secret-toolkit-utils"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "402b94d9253f9cf40015e9c0bf294dd0b9b3b291a576918059958cea4b2786b7"
+checksum = "83f1cba2e70fd701e3dfc6072807c02eeeb9776bee49e346a9c7745d84ff40c8"
 dependencies = [
  "schemars",
  "secret-cosmwasm-std",
@@ -622,11 +674,11 @@ dependencies = [
 
 [[package]]
 name = "secret-toolkit-viewing-key"
-version = "0.7.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b555a4b863521be8e4f10cdfe808afd5925fa0d27c73830ed1ff578acd7086b8"
+checksum = "2d89a0b69fa9b12735a612fa30e6e7e48130943982f1783b7ddd5c46ed09e921"
 dependencies = [
- "base64",
+ "base64 0.21.5",
  "schemars",
  "secret-cosmwasm-std",
  "secret-cosmwasm-storage",
@@ -645,6 +697,7 @@ dependencies = [
  "secret-cosmwasm-std",
  "secret-cosmwasm-storage",
  "secret-toolkit",
+ "secret-toolkit-storage",
  "serde",
  "snafu",
  "thiserror",
@@ -676,7 +729,7 @@ checksum = "4c614d17805b093df4b147b51339e7e44bf05ef59fba1e45d83500bcfb4d8585"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.12",
+ "syn 2.0.39",
 ]
 
 [[package]]
@@ -737,9 +790,9 @@ dependencies = [
 
 [[package]]
 name = "snafu"
-version = "0.6.10"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eab12d3c261b2308b0d80c26fffb58d17eba81a4be97890101f416b478c79ca7"
+checksum = "e4de37ad025c587a29e8f3f5605c00f70b98715ef90b9061a815b9e59e9042d6"
 dependencies = [
  "doc-comment",
  "snafu-derive",
@@ -747,10 +800,11 @@ dependencies = [
 
 [[package]]
 name = "snafu-derive"
-version = "0.6.10"
+version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1508efa03c362e23817f96cde18abed596a25219a8b2c66e8db33c03543d315b"
+checksum = "990079665f075b699031e9c08fd3ab99be5029b96f3b78dc0709e8f77e4efebf"
 dependencies = [
+ "heck",
  "proc-macro2",
  "quote",
  "syn 1.0.109",
@@ -791,9 +845,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.12"
+version = "2.0.39"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79d9531f94112cfc3e4c8f5f02cb2b58f72c97b7efd85f70203cc6d8efda5927"
+checksum = "23e78b90f2fcf45d3e842032ce32e3f2d1545ba6636271dcbf24fa306d87be7a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -802,22 +856,22 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.40"
+version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "978c9a314bd8dc99be594bc3c175faaa9794be04a5a5e153caba6915336cebac"
+checksum = "f9a7210f5c9a7156bb50aa36aed4c95afb51df0df00713949448cf9e97d382d2"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.40"
+version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9456a42c5b0d803c8cd86e73dd7cc9edd429499f37a3550d286d5e86720569f"
+checksum = "266b2e40bc00e5a6c09c3584011e08b06f123c00362c92b975ba9843aaaa14b8"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.12",
+ "syn 2.0.39",
 ]
 
 [[package]]
