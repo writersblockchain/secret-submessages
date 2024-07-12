@@ -1,6 +1,7 @@
 use crate::error::ContractError;
+use anybuf::Anybuf;
 use cosmwasm_std::{
-    entry_point, DepsMut, Env, MessageInfo, Reply, Response, StdResult, SubMsg, SubMsgResult,
+    entry_point, to_vec, Binary, ContractResult, DepsMut, Env, MessageInfo, Reply, Response, StdError, StdResult, SubMsg, SubMsgResult, SystemResult
 };
 use secret_toolkit::utils::HandleCallback;
 
@@ -47,11 +48,13 @@ fn handle_increment_reply(_deps: DepsMut, msg: Reply) -> Result<Response, Contra
 }
 
 pub fn try_increment(_deps: DepsMut, _env: Env, contract: String) -> StdResult<Response> {
-    let exec_msg = CounterExecuteMsg::Increment { contract };
+    let exec_msg = CounterExecuteMsg::Increment { contract};
+
+    let code_hash = get_contract_code_hash(_deps, "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string())?;
 
     let submsg = SubMsg::reply_always(
         exec_msg.to_cosmos_msg(
-            "d3474b3c15ce262c78746f3536cd5f50657f0bc0b4020963947005134583e593".to_string(),
+            code_hash,
             "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string(),
             None,
         )?,
@@ -59,4 +62,40 @@ pub fn try_increment(_deps: DepsMut, _env: Env, contract: String) -> StdResult<R
     );
 
     Ok(Response::new().add_submessage(submsg))
+}
+
+fn get_contract_code_hash(deps: DepsMut, contract_address: String) -> StdResult<String> {
+    let code_hash_query: cosmwasm_std::QueryRequest<cosmwasm_std::Empty> = cosmwasm_std::QueryRequest::Stargate {
+        path: "/secret.compute.v1beta1.Query/CodeHashByContractAddress".into(),
+        data: Binary(Anybuf::new()
+        .append_string(1, contract_address)
+        .into_vec())
+    };
+
+    let raw = to_vec(&code_hash_query).map_err(|serialize_err| {
+        StdError::generic_err(format!("Serializing QueryRequest: {}", serialize_err))
+    })?;
+
+    let code_hash = match deps.querier.raw_query(&raw) {
+        SystemResult::Err(system_err) => Err(StdError::generic_err(format!(
+            "Querier system error: {}",
+            system_err
+        ))),
+        SystemResult::Ok(ContractResult::Err(contract_err)) => Err(StdError::generic_err(format!(
+            "Querier contract error: {}",
+            contract_err
+        ))),
+        SystemResult::Ok(ContractResult::Ok(value)) => Ok(value)
+    }?;
+
+    // Remove the "\n@" if it exists at the start of the code_hash
+    let mut code_hash_str = String::from_utf8(code_hash.to_vec()).map_err(|err| {
+        StdError::generic_err(format!("Invalid UTF-8 sequence: {}", err))
+    })?;
+
+    if code_hash_str.starts_with("\n@") {
+        code_hash_str = code_hash_str.trim_start_matches("\n@").to_string();
+    }
+
+    Ok(code_hash_str)
 }

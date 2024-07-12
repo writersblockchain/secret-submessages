@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
-    "secretjs": "^1.12.3"
+    "secretjs": "^1.12.5"
   }
 }
