@@ -47,10 +47,10 @@ fn handle_increment_reply(_deps: DepsMut, msg: Reply) -> Result<Response, Contra
     }
 }
 
-pub fn try_increment(_deps: DepsMut, _env: Env, contract: String) -> StdResult<Response> {
+pub fn try_increment(deps: DepsMut, _env: Env, contract: String) -> StdResult<Response> {
     let exec_msg = CounterExecuteMsg::Increment { contract};
 
-    let code_hash = get_contract_code_hash(_deps, "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string())?;
+    let code_hash = get_contract_code_hash(deps, "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string())?;
 
     let submsg = SubMsg::reply_always(
         exec_msg.to_cosmos_msg(
