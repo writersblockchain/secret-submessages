@@ -1,6 +1,7 @@
 use crate::state::BLOCK_SIZE;
 use schemars::JsonSchema;
 use secret_toolkit::utils::InitCallback;
+use secret_toolkit::utils::HandleCallback;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -15,3 +16,9 @@ pub enum ExecuteMsg {
 impl InitCallback for ExecuteMsg {
     const BLOCK_SIZE: usize = BLOCK_SIZE;
 }
+
+impl HandleCallback for ExecuteMsg {
+    const BLOCK_SIZE: usize = BLOCK_SIZE;
+}
+
+

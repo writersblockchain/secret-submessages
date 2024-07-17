@@ -5,7 +5,6 @@ use cosmwasm_std::{
 };
 use secret_toolkit::utils::HandleCallback;
 
-use crate::counter::CounterExecuteMsg;
 use crate::msg::{ExecuteMsg, InstantiateMsg};
 use crate::state::EXECUTE_INCREMENT_REPLY_ID;
 
@@ -48,21 +47,26 @@ fn handle_increment_reply(_deps: DepsMut, msg: Reply) -> Result<Response, Contra
 }
 
 pub fn try_increment(deps: DepsMut, _env: Env, contract: String) -> StdResult<Response> {
-    let exec_msg = CounterExecuteMsg::Increment { contract};
+    // Create the execution message for increment
+    let exec_msg = ExecuteMsg::Increment { contract: contract.clone() };
 
-    let code_hash = get_contract_code_hash(deps, "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string())?;
+    // Retrieve the contract code hash
+    let code_hash = get_contract_code_hash(deps, contract.clone())?;
 
+    // Create the submessage
     let submsg = SubMsg::reply_always(
         exec_msg.to_cosmos_msg(
             code_hash,
-            "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr".to_string(),
+            contract.clone(),
             None,
         )?,
         EXECUTE_INCREMENT_REPLY_ID,
     );
 
+    // Return the response with the submessage
     Ok(Response::new().add_submessage(submsg))
 }
+
 
 fn get_contract_code_hash(deps: DepsMut, contract_address: String) -> StdResult<String> {
     let code_hash_query: cosmwasm_std::QueryRequest<cosmwasm_std::Empty> = cosmwasm_std::QueryRequest::Stargate {
