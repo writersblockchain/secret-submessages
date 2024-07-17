@@ -2,7 +2,7 @@ import { SecretNetworkClient, Wallet } from "secretjs";
 import dotenv from "dotenv";
 dotenv.config();
 
-const wallet = new Wallet(process.env.MNEMONIC);
+const wallet = new Wallet("desk pigeon hammer sleep only mistake stool december offer patrol once vacant");
 
 const secretjs = new SecretNetworkClient({
   chainId: "pulsar-3",
