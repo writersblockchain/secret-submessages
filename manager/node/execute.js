@@ -11,9 +11,9 @@ const secretjs = new SecretNetworkClient({
   walletAddress: wallet.address,
 });
 
-const contractAddress = "secret10cfkrg3z4flea57zte3kpnxpgrdagevjg5ve4d";
+const contractAddress = "secret1fegxxcn00zv64qduqypspu0zndshkxhus4k5ae";
 const contractCodeHash =
-  "ff0185c4f7179db00b847727b2ae46d6542b75a648b12aaafe2c762d4d78a3e5";
+  "f43a939a6fd4b7ebfec7e7bb6cdeae7b8798f7545864f61000b821906952937e";
 
 let increase_count = async () => {
   const tx = await secretjs.tx.compute.executeContract(
@@ -22,7 +22,7 @@ let increase_count = async () => {
       contract_address: contractAddress,
       msg: {
         increment: {
-          contract: "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr",
+          contract: "secret1cldglt6wvueva2akly4x3wvzzlevk2hxzv0cvq",
         },
       },
       code_hash: contractCodeHash,

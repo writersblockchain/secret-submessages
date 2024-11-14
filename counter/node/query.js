@@ -11,9 +11,9 @@ const secretjs = new SecretNetworkClient({
   walletAddress: wallet.address,
 });
 
-const contractAddress = "secret14q0jeyflxsd43zq3j82vkp08vp47r5ftt3glfr";
+const contractAddress = "secret1cldglt6wvueva2akly4x3wvzzlevk2hxzv0cvq";
 const contractCodeHash =
-  "d3474b3c15ce262c78746f3536cd5f50657f0bc0b4020963947005134583e593";
+  "9c0d7d6d626a09c9b9193b23c22da5b6a3a68121a59e1f9772694b361d518e8a";
 
 let query_count = async () => {
   const count = await secretjs.query.compute.queryContract({

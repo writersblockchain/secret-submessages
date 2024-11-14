@@ -5,7 +5,7 @@ dotenv.config();
 
 const wallet = new Wallet("desk pigeon hammer sleep only mistake stool december offer patrol once vacant");
 
-const contract_wasm = fs.readFileSync("../contract.wasm.gz");
+const contract_wasm = fs.readFileSync("../optimized-wasm/secret_contract_example.wasm.gz");
 
 const secretjs = new SecretNetworkClient({
   chainId: "pulsar-3",
