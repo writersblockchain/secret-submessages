@@ -9,7 +9,7 @@ const contract_wasm = fs.readFileSync("../optimized-wasm/secret_contract_example
 
 const secretjs = new SecretNetworkClient({
   chainId: "pulsar-3",
-  url: "https://lcd.testnet.secretsaturn.net",
+  url: "https://pulsar.lcd.secretnodes.com",
   wallet: wallet,
   walletAddress: wallet.address,
 });
